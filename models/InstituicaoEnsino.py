@@ -14,4 +14,13 @@ class InstituicaoEnsino():
         return ''
 
     def to_json(self):
-        return {"codigo": self.codigo, "nome": self.nome}
+        return {
+            "codigo": self.codigo,
+            "nome": self.nome,
+            "co_uf": self.co_uf,
+            "co_municipio": self.co_municipio,
+            "qt_mat_bas": self.qt_mat_bas,
+            "qt_mat_prof": self.qt_mat_prof,
+            "qt_mat_eja": self.qt_mat_eja,
+            "qt_mat_esp": self.qt_mat_esp
+            }
