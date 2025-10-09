@@ -11,7 +11,7 @@ usuarios = [Usuario("João", "123.456.789-00", "2000-01-01")]
 ##                       25, "2501005", 779, 0, 104, 43)
 ##instituicoesEnsino = [ie]
 
-## helper getInstituicaoEnsino
+## helper def getInstituicaoEnsino
 
 instituicoesEnsino = []
 with open('data/instituicoes_paraiba.json', 'r', encoding='utf-8') as file:
