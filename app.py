@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 usuarios = [Usuario("João", "123.456.789-00", "2000-01-01")]
 
+## _N4hrf4wexjh7Nnl8wEYBuGRdeq7jh20mn03F
 ##ie = InstituicaoEnsino("25000012", "EMEF JOAO ALVES",
 ##                       25, "2501005", 779, 0, 104, 43)
 ##instituicoesEnsino = [ie]
