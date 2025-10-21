@@ -1,35 +1,14 @@
 from flask import Flask, request, jsonify
 from models.InstituicaoEnsino import InstituicaoEnsino
 from models.Usuario import Usuario
+from Helpers.instituicoesEnsino import get_instituicoes_ensino
 import json
 
 app = Flask(__name__)
 
 usuarios = [Usuario("João", "123.456.789-00", "2000-01-01")]
 
-## _N4hrf4wexjh7Nnl8wEYBuGRdeq7jh20mn03F
-##ie = InstituicaoEnsino("25000012", "EMEF JOAO ALVES",
-##                       25, "2501005", 779, 0, 104, 43)
-##instituicoesEnsino = [ie]
-
-## helper def getInstituicaoEnsino
-
-instituicoesEnsino = []
-with open('data/instituicoes_paraiba.json', 'r', encoding='utf-8') as file:
-    dados = json.load(file)
-    for ie_dados in dados:
-        ie = InstituicaoEnsino(
-            ie_dados["codigo"],
-            ie_dados["nome"],
-            ie_dados["co_uf"],
-            ie_dados["co_municipio"],
-            ie_dados["qt_mat_bas"],
-            ie_dados["qt_mat_prof"],
-            ie_dados["qt_mat_eja"],
-            ie_dados["qt_mat_esp"]
-        )
-        instituicoesEnsino.append(ie)
-
+instituicoesEnsino = get_instituicoes_ensino()
 
 @app.get("/")
 def index():
@@ -63,7 +42,6 @@ def setUsuarios():
     usuarios.append(usuario)
 
     return usuario.to_json(), 201
-
 
 
 
