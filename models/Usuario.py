@@ -7,7 +7,7 @@ class Usuario:
 
 
     def __repr__(self):
-        return f'<Usuario (self.nome), (self.cpf), (self.data_nascimento)>'
+        return f'<Usuario {self.nome}, {self.cpf}, {self.data_nascimento}>'
 
 
     def to_json(self):
@@ -21,4 +21,4 @@ class Usuario:
 
 if __name__ == "__main__":
     usuario = Usuario(1, "edi", "111222333", "2025-10-09")
-    print(usuario)              
+    print(usuario)

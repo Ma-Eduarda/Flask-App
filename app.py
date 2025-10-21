@@ -2,11 +2,11 @@ from flask import Flask, request, jsonify
 from models.InstituicaoEnsino import InstituicaoEnsino
 from models.Usuario import Usuario
 from Helpers.instituicoesEnsino import get_instituicoes_ensino
-import json
+
 
 app = Flask(__name__)
 
-usuarios = [Usuario("João", "123.456.789-00", "2000-01-01")]
+usuarios = [Usuario(2,"João", "123.456.789-00", "2000-01-01")]
 
 instituicoesEnsino = get_instituicoes_ensino()
 
@@ -24,10 +24,10 @@ def getUsuarios():
 
 @app.get("/usuarios/<int:id>")
 def getUsuariosById(id: int):
-    if id < 0 or id >= len(usuarios):
-        return 'Usuário não encontrado', 404
-
-    return jsonify(usuarios[id].to_json())
+    for usuario in usuarios:
+        if usuario.id == id:
+            return jsonify(usuario.to_json()), 200
+    return jsonify({"erro": "Usuário não encontrado"}), 404
 
 
 @app.post("/usuarios")
@@ -35,6 +35,7 @@ def setUsuarios():
     data = request.get_json()
 
     usuario = Usuario(
+        id=data['id'],
         nome=data['nome'],
         cpf=data['cpf'],
         data_nascimento=data['data_nascimento']
@@ -43,6 +44,26 @@ def setUsuarios():
 
     return usuario.to_json(), 201
 
+
+@app.put("/usuarios/<int:id>")
+def atualizarUsuario(id: int):
+    for usuario in usuarios:
+        if usuario.id == id:
+            data = request.get_json()
+            usuario.nome = data['nome']
+            usuario.cpf = data['cpf']
+            usuario.data_nascimento = data['data_nascimento']
+            return usuario.to_json(), 200
+    return jsonify({"erro": "Usuário não encontrado"}), 404
+
+
+@app.delete("/usuarios/<int:id>")
+def deletarUsuario(id: int):
+    for usuario in usuarios:
+        if usuario.id == id:
+            usuarios.remove(usuario)
+            return '', 204
+    return jsonify({"erro": "Usuário não encontrado"}), 404
 
 
 ## --- Rotas para Instituição de Ensino --- 
@@ -79,6 +100,7 @@ def setInstituicoesEnsino():
 
     return ie.to_json(), 201
 
+
 @app.put("/instituicoesensino/<codigo>")
 def atualizarInstituicoesEnsino(codigo: str):
     data = request.get_json()
@@ -95,6 +117,7 @@ def atualizarInstituicoesEnsino(codigo: str):
             return ie.to_json(), 200
 
     return 'Instituição não encontrada', 404
+
 
 @app.delete("/instituicoesensino/<codigo>")
 def deletarInstituicoesEnsino(codigo: str):
