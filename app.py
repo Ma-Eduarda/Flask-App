@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
 from models.InstituicaoEnsino import InstituicaoEnsino
 from models.Usuario import Usuario
-from Helpers.instituicoesEnsino import get_instituicoes_ensino
+from Helpers.instituicoesEnsino import get_instituicoes_ensino, salvar_instituicoes_ensino
+from Helpers.usuarios import get_usuarios, salvar_usuarios
 
 
 app = Flask(__name__)
 
-usuarios = [Usuario(2,"João", "123.456.789-00", "2000-01-01")]
-
 instituicoesEnsino = get_instituicoes_ensino()
+usuarios = get_usuarios()
 
 @app.get("/")
 def index():
@@ -41,6 +41,7 @@ def setUsuarios():
         data_nascimento=data['data_nascimento']
     )
     usuarios.append(usuario)
+    salvar_usuarios(usuarios)
 
     return usuario.to_json(), 201
 
@@ -53,6 +54,7 @@ def atualizarUsuario(id: int):
             usuario.nome = data['nome']
             usuario.cpf = data['cpf']
             usuario.data_nascimento = data['data_nascimento']
+            salvar_usuarios(usuarios)
             return usuario.to_json(), 200
     return jsonify({"erro": "Usuário não encontrado"}), 404
 
@@ -62,6 +64,7 @@ def deletarUsuario(id: int):
     for usuario in usuarios:
         if usuario.id == id:
             usuarios.remove(usuario)
+            salvar_usuarios(usuarios)
             return '', 204
     return jsonify({"erro": "Usuário não encontrado"}), 404
 
@@ -97,6 +100,7 @@ def setInstituicoesEnsino():
         data["qt_mat_esp"]
     )
     instituicoesEnsino.append(ie)
+    salvar_instituicoes_ensino(instituicoesEnsino)
 
     return ie.to_json(), 201
 
@@ -114,6 +118,7 @@ def atualizarInstituicoesEnsino(codigo: str):
             ie.qt_mat_prof = data["qt_mat_prof"]
             ie.qt_mat_eja = data["qt_mat_eja"]
             ie.qt_mat_esp = data["qt_mat_esp"]
+            salvar_instituicoes_ensino(instituicoesEnsino)
             return ie.to_json(), 200
 
     return 'Instituição não encontrada', 404
@@ -124,6 +129,7 @@ def deletarInstituicoesEnsino(codigo: str):
     for ie in instituicoesEnsino:
         if ie.codigo == codigo:
             instituicoesEnsino.remove(ie)
+            salvar_instituicoes_ensino(instituicoesEnsino)
             return '', 204
 
     return 'Instituição não encontrada', 404

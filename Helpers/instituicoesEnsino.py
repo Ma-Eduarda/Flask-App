@@ -21,3 +21,9 @@ def get_instituicoes_ensino():
             instituicoesEnsino.append(ie)  
 
     return instituicoesEnsino  
+
+def salvar_instituicoes_ensino(instituicoesEnsino):
+    dados = [ie.to_json() for ie in instituicoesEnsino]
+
+    with open('data/instituicoes_paraiba.json', 'w', encoding='utf-8') as file:
+        json.dump(dados, file, ensure_ascii=False, indent=4)
